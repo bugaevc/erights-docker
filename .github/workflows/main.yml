@@ -1,0 +1,23 @@
+name: build
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build_and_push:
+    name: Build and Push the Docker images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to GitHub Packages Docker Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Debian Buster image
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ghcr.io/bugaevc/e-rights
